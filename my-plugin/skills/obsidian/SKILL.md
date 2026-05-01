@@ -92,6 +92,7 @@ Use:
 
 ## Constraints
 
+- Do not use the title of the note as a standalone section.
 - Do not turn notes into long-form essays unless the user asks.
 - Do not introduce a new notation system unnecessarily.
 - Do not add bibliography entries that are not cited unless the user asks for a bibliography dump.
