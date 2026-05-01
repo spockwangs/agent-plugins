@@ -25,6 +25,7 @@ Use this skill when working on Obsidian markdown notes, especially research note
 4. When introducing formulas, add one or two sentences of intuition after the math.
 5. Avoid unnecessary repetition across sections. If a concept already appears, extend or refine it instead of restating it.
 6. When comparing related papers, state clearly which notation or objective belongs to which paper.
+7. NEVER include a standalone title heading (e.g., `# Notes on X`) at the top of the file. The file name serves as the title. Start the note directly with the first content section (e.g., `# Motivation` or `# Introduction`).
 
 ## Math formatting
 
@@ -92,8 +93,8 @@ Use:
 
 ## Constraints
 
-- Do not use the title of the note as a standalone section.
 - Do not turn notes into long-form essays unless the user asks.
 - Do not introduce a new notation system unnecessarily.
 - Do not add bibliography entries that are not cited unless the user asks for a bibliography dump.
 - Prefer compact explanation over exhaustive background.
+- NEVER add a standalone title section (like `# Notes on X`) at the top of the file. The file name serves as the title. Start directly with the first content section.
