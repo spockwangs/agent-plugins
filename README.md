@@ -36,6 +36,7 @@ mkdir -p .cursor && ln -s ../skills .cursor/skills
 
 | Skill      | Description |
 | ---------- | ----------- |
+| `elementary-math` | Design first-principles, visual elementary mathematics lessons and print-quality Chinese PDF worksheets. |
 | `obsidian` | Write and edit Obsidian markdown notes for technical / research topics. |
 
 Invoke a skill from your agent with `/obsidian` (or let the agent auto-trigger it based on the `description`).
