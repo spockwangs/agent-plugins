@@ -112,6 +112,11 @@ install_skill_one() {
   local target_root="$1" skill="$2"
   local src; src="$(src_skill_path "$skill")"
   local dest="$target_root/$skill"
+  if [[ "$MODE" == "symlink" && -L "$dest" ]] &&
+     [[ "$(resolve_path "$dest")" == "$(resolve_path "$src")" ]]; then
+    printf "${c_dim}  - skip    %s (already linked to this repo)${c_reset}\n" "$dest"
+    return 0
+  fi
   mkdir -p "$target_root" || return 1
   maybe_backup_skill "$dest" "$src"
   if [[ "$MODE" == "copy" ]]; then
@@ -219,7 +224,18 @@ agents_md_target() {
 # Is an existing target file one we previously installed?
 is_ours_md() {
   local target="$1" source="$2"
-  [[ -L "$target" ]] && [[ "$(readlink "$target")" == "$source" ]] && return 0
+  if [[ -L "$target" ]]; then
+    local tgt resolved_tgt
+    tgt="$(readlink "$target")"
+    [[ "$tgt" == "$source" ]] && return 0
+    # Accept equivalent paths (relative vs absolute symlink targets).
+    if [[ "$tgt" == /* ]]; then
+      resolved_tgt="$(resolve_path "$tgt")"
+    else
+      resolved_tgt="$(resolve_path "$(dirname "$target")/$tgt")"
+    fi
+    [[ "$resolved_tgt" == "$(resolve_path "$source")" ]] && return 0
+  fi
   [[ -f "$target" ]] && grep -qF "$MARKER" "$target" 2>/dev/null && return 0
   return 1
 }
@@ -241,6 +257,11 @@ install_agents_md_one() {
   rt="$(resolve_path "$target")"; rs="$(resolve_path "$src")"
   if [[ "$rt" == "$rs" ]]; then
     log "  agents.md: target is the source file, skipping."
+    return 0
+  fi
+  # Already a symlink pointing at this repo — leave it alone.
+  if [[ "$method" == "symlink" && -L "$target" ]] && is_ours_md "$target" "$src"; then
+    printf "${c_dim}  - skip    %s (already linked to this repo)${c_reset}\n" "$target"
     return 0
   fi
   mkdir -p "$(dirname "$target")" || return 1
@@ -296,7 +317,9 @@ run_agents_md_for_agent() {
     log "  agents.md: $agent reads AGENTS.md natively here, nothing to do."
     return 0
   fi
-  if [[ "$SCOPE" == "user" && "$ACTION" == "install" ]]; then
+  if [[ "$SCOPE" == "user" && "$ACTION" == "install" ]] &&
+     { [[ -e "$target" ]] || [[ -L "$target" ]]; } &&
+     ! is_ours_md "$target" "$AGENTS_MD"; then
     warn "agents.md: $ACTION will replace global memory file $target (existing backed up)"
   fi
   if [[ "$ACTION" == "uninstall" ]]; then
