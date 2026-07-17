@@ -1,6 +1,6 @@
 ---
 name: elementary-math
-description: Design elementary mathematics lessons, worksheets, and print-quality Chinese PDF materials using first-principles explanations, age-appropriate visual models, guided discovery, and layered practice. Use when teaching primary-school math, creating visual math exercises, explaining arithmetic laws conceptually, or producing Chinese LaTeX worksheets and answer keys.
+description: Design elementary mathematics lessons, worksheets, and print-quality Chinese PDF materials using first-principles explanations, age-appropriate visual models, guided discovery, local checks after every concept, and comprehensive assessments. Use when teaching primary-school math, creating visual math exercises, explaining arithmetic laws conceptually, or producing Chinese LaTeX worksheets and answer keys.
 ---
 
 # Elementary Mathematics
@@ -22,6 +22,28 @@ Create materials that help children understand why mathematics works before aski
 5. Keep numbers and language appropriate for the intended grade.
 6. Distinguish a calculation result from the reason it is valid.
 
+## Required lesson structure
+
+Before writing, list the knowledge points the material must teach. Use this structure:
+
+1. Begin with a short concrete situation that reveals the first idea.
+2. For every knowledge point, in order:
+   - show an explanatory visual model;
+   - guide the learner to observe what changes and what stays invariant;
+   - explain the idea in spoken language;
+   - connect the picture to numerical examples and then symbols;
+   - immediately give 3--6 exercises that test this knowledge point.
+3. Do not postpone all exercises until the end. A learner must practice each idea before the next idea is introduced.
+4. End with 4--8 comprehensive problems that jointly cover every knowledge point in the material. Include at least one multi-step problem and one explanation or error-diagnosis problem.
+5. Keep student pages and the answer key separate. In the answer key, explain the reasoning for visual, conceptual, and comprehensive problems.
+
+Before delivery, check that every listed knowledge point maps to:
+
+- at least one meaningful visual explanation;
+- at least three local exercises;
+- at least one local or comprehensive answer with reasoning;
+- at least one item in the final comprehensive assessment.
+
 ## Visual models
 
 Choose the model that exposes the mathematical structure:
@@ -33,6 +55,59 @@ Choose the model that exposes the mathematical structure:
 - geometric transformation: symmetry, congruence, and spatial reasoning.
 
 The diagram must carry explanatory meaning. Label the start, action, quantity, and result when relevant. Do not add decorative graphics that compete with the mathematics.
+
+Every knowledge point must have a visual model unless the user explicitly requests text-only material. A visual must make the inference visible, not merely illustrate the story:
+
+- draw every counted object, unit square, segment, or group needed for the argument;
+- label quantities, groups, boundaries, and the operation represented;
+- use consistent colors for equal quantities and contrasting colors for parts with different roles;
+- place related diagrams together so the learner can compare them;
+- state in words what changed and what remained unchanged;
+- connect each visible part directly to a term in the expression.
+
+Use only units and terminology already available to the learner. If the grade or prior knowledge is unknown, prefer counters, grids, "格", "份", and "单位正方形" over centimetres, square centimetres, or other formal measurement units.
+
+## Multiplication and divisibility visual patterns
+
+When these topics appear, use the following defaults.
+
+### Meanings of multiplication
+
+- Repeated addition: show equal groups or a complete array, then match every group to one addend.
+- Efficient counting: show how rows and columns replace counting objects one by one.
+- Area: draw the full rectangle and every unit square inside it. Label rows and columns and count area as the number of unit squares. Do not show only corner marks, dots, or an empty rectangle.
+- Multiplier roles: choose and state one convention such as "每份数量 × 份数". Explain that swapping factors preserves the product but changes their contextual roles.
+
+### Laws of multiplication
+
+- Commutativity: rotate or reinterpret the same complete array. Show that rows and columns exchange while no object is added or removed.
+- Associativity: use the same rectangle of unit squares and count it in two grouping orders. For example, in a \(2\)-row, \(12\)-column rectangle, group the columns into four \(3\)-column blocks:
+  \[
+  (2\times3)\times4=2\times(3\times4).
+  \]
+  Label both readings on the picture. Do not rely only on nested boxes or a verbal packaging story.
+- Distributivity: split one complete rectangle along a grid line, keep every unit square visible, and match each sub-rectangle to one product:
+  \[
+  (a+b)\times c=a\times c+b\times c.
+  \]
+- For every law, include a non-example or incorrect transformation and ask the learner to diagnose it.
+
+### Multiplicative comparison
+
+Use aligned bar models or rows of equal squares to compare:
+
+- the original one part;
+- "\(A\) is \(k\) times \(B\)": \(k\) total equal parts;
+- "\(A\) is \(k\) times more than \(B\)": the original one part plus \(k\) additional equal parts, for \(k+1\) total parts.
+
+Place the models together, color the original part consistently, color added parts differently, and label "原来的1份" and "多出的\(k\)份". Explicitly contrast "\(k\)倍", "多\(k\)倍", and "多\(k\)".
+
+### Factors, common factors, and multiples
+
+- Factors and factorization: arrange all objects into rectangles and read factor pairs from row and column counts; use a factor tree only after factor pairs are understood.
+- Common factors and greatest common factor: show two quantities partitioned into equal groups and compare all valid common group sizes before selecting the greatest.
+- Common multiples and least common multiple: align skip-counting tracks, number lines, schedules, or ordered multiple lists; mark coincidences and identify the first positive coincidence.
+- Keep "largest equal grouping" visually distinct from "first shared recurrence" so greatest common factor and least common multiple are not confused.
 
 ## Guided-discovery pattern
 
@@ -70,6 +145,32 @@ Build a progression rather than a list of near-duplicate calculations:
 
 Use enough blank space for drawing and written reasoning. Provide answers and short reasoning for conceptual questions. Keep the answer key separate from student pages when practical.
 
+Immediately after each knowledge-point explanation, include a short local check that progresses through at least three of these forms:
+
+1. read or complete the model just shown;
+2. draw the model from an expression or story;
+3. write an expression from a model;
+4. fill a missing value or label;
+5. compare two representations without calculating;
+6. explain why a statement is true;
+7. diagnose an incorrect argument;
+8. apply the idea in a new context.
+
+Avoid sets made only of near-duplicate calculations. At least one local exercise must require a drawing or explanation.
+
+## Comprehensive assessment
+
+End the student section with a clearly titled comprehensive assessment:
+
+- cover every knowledge point introduced in the material;
+- combine two or more ideas in at least one problem;
+- include representation, calculation, explanation, and transfer;
+- avoid introducing new units, notation, or contexts that were not taught;
+- provide enough space for diagrams and reasoning;
+- give complete answers and short justifications in the separate answer key.
+
+Before finalizing, make a private coverage map from each comprehensive problem to the knowledge points it tests. Add or revise problems until no knowledge point is omitted.
+
 ## Simplifying calculations
 
 Teach "friendly numbers" as a consequence of the laws, not as an unexplained trick:
@@ -87,7 +188,11 @@ Use XeLaTeX with `ctexart`, `amsmath`, and TikZ for editable vector diagrams.
 
 Default typography:
 
-- A4 page with comfortable margins;
+- A4 page with compact but readable margins;
+- do not create a standalone cover unless the user explicitly requests one; place a compact title and name/date fields above the first lesson;
+- omit page headers by default; a small page number in the footer is sufficient;
+- let sections flow continuously and do not force a new page between chapters;
+- minimize unused vertical space while preserving room that students actually need for drawing and written answers;
 - body text in regular Kaiti, without bold emphasis;
 - reserve bold sans-serif for the title, section headings, and box headings;
 - use LaTeX math mode for all mathematical symbols and formulas;
@@ -123,11 +228,15 @@ Before delivering a PDF:
 ## Quality checklist
 
 - [ ] The concept begins with meaning, not a memorized procedure.
+- [ ] Every knowledge point has a meaningful, fully labeled visual model.
 - [ ] Every diagram supports a specific inference.
 - [ ] Examples lead naturally to the symbolic statement.
 - [ ] Rules are accompanied by a reason or invariant.
+- [ ] Every knowledge point is followed immediately by at least three varied exercises.
 - [ ] Exercises progress from representation to explanation and transfer.
 - [ ] Common misconceptions are addressed.
+- [ ] The final comprehensive assessment covers every knowledge point.
+- [ ] There is no unrequested cover, page header, or forced chapter break wasting paper.
 - [ ] Body text is regular Kaiti and not bold.
 - [ ] Mathematical notation is typeset consistently.
 - [ ] The PDF has been compiled and visually inspected.
