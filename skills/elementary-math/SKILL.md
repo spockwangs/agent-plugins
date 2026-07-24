@@ -28,21 +28,21 @@ Before writing, list the knowledge points the material must teach. Use this stru
 
 1. Begin with a short concrete situation that reveals the first idea.
 2. For every knowledge point, in order:
-   - show an explanatory visual model;
+   - show an explanatory visual model first, and let the visual carry the concept before any rule is stated;
    - guide the learner to observe what changes and what stays invariant;
    - explain the idea in spoken language;
    - connect the picture to numerical examples and then symbols;
-   - immediately give 3--6 exercises that test this knowledge point.
+   - immediately give 1--3 exercises that check understanding of this concept (not yet comprehensive application).
 3. Do not postpone all exercises until the end. A learner must practice each idea before the next idea is introduced.
-4. End with 4--8 comprehensive problems that jointly cover every knowledge point in the material. Include at least one multi-step problem and one explanation or error-diagnosis problem.
+4. End with exactly 5 comprehensive problems that jointly cover every knowledge point in the material. Include at least one multi-step problem and one explanation or error-diagnosis problem.
 5. Keep student pages and the answer key separate. In the answer key, explain the reasoning for visual, conceptual, and comprehensive problems.
 
 Before delivery, check that every listed knowledge point maps to:
 
 - at least one meaningful visual explanation;
-- at least three local exercises;
+- 1--3 local exercises that check understanding of the concept;
 - at least one local or comprehensive answer with reasoning;
-- at least one item in the final comprehensive assessment.
+- at least one item in the final 5-problem comprehensive assessment.
 
 ## Visual models
 
@@ -145,7 +145,7 @@ Build a progression rather than a list of near-duplicate calculations:
 
 Use enough blank space for drawing and written reasoning. Provide answers and short reasoning for conceptual questions. Keep the answer key separate from student pages when practical.
 
-Immediately after each knowledge-point explanation, include a short local check that progresses through at least three of these forms:
+Immediately after each knowledge-point explanation, include a short local check of 1--3 questions that progress through at least two of these forms:
 
 1. read or complete the model just shown;
 2. draw the model from an expression or story;
@@ -156,20 +156,21 @@ Immediately after each knowledge-point explanation, include a short local check 
 7. diagnose an incorrect argument;
 8. apply the idea in a new context.
 
-Avoid sets made only of near-duplicate calculations. At least one local exercise must require a drawing or explanation.
+Avoid sets made only of near-duplicate calculations. At least one local exercise must require a drawing or explanation. Keep the local check focused on concept understanding; reserve combined or multi-step application for the final comprehensive assessment.
 
 ## Comprehensive assessment
 
-End the student section with a clearly titled comprehensive assessment:
+End the student section with a clearly titled comprehensive assessment of exactly 5 problems that:
 
-- cover every knowledge point introduced in the material;
+- together cover every knowledge point introduced in the material;
 - combine two or more ideas in at least one problem;
 - include representation, calculation, explanation, and transfer;
+- include at least one multi-step problem and one explanation or error-diagnosis problem;
 - avoid introducing new units, notation, or contexts that were not taught;
 - provide enough space for diagrams and reasoning;
 - give complete answers and short justifications in the separate answer key.
 
-Before finalizing, make a private coverage map from each comprehensive problem to the knowledge points it tests. Add or revise problems until no knowledge point is omitted.
+Before finalizing, make a private coverage map from each of the 5 comprehensive problems to the knowledge points it tests. Add or revise problems until no knowledge point is omitted.
 
 ## Simplifying calculations
 
@@ -232,10 +233,10 @@ Before delivering a PDF:
 - [ ] Every diagram supports a specific inference.
 - [ ] Examples lead naturally to the symbolic statement.
 - [ ] Rules are accompanied by a reason or invariant.
-- [ ] Every knowledge point is followed immediately by at least three varied exercises.
+- [ ] Every knowledge point is followed immediately by 1--3 exercises that check concept understanding.
 - [ ] Exercises progress from representation to explanation and transfer.
 - [ ] Common misconceptions are addressed.
-- [ ] The final comprehensive assessment covers every knowledge point.
+- [ ] The final comprehensive assessment has exactly 5 problems and covers every knowledge point.
 - [ ] There is no unrequested cover, page header, or forced chapter break wasting paper.
 - [ ] Body text is regular Kaiti and not bold.
 - [ ] Mathematical notation is typeset consistently.
