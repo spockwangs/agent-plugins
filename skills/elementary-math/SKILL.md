@@ -67,6 +67,73 @@ Every knowledge point must have a visual model unless the user explicitly reques
 
 Use only units and terminology already available to the learner. If the grade or prior knowledge is unknown, prefer counters, grids, "格", "份", and "单位正方形" over centimetres, square centimetres, or other formal measurement units.
 
+## Drawing number lines with TikZ
+
+Number lines are the most error-prone diagram. Apply these rules, learned from repeated overlap fixes:
+
+### Axis style and ticks
+
+Define one reusable `axis` style and one `tick` style so every line looks consistent:
+
+```latex
+\usetikzlibrary{decorations.pathreplacing,arrows.meta}
+\tikzset{
+  axis/.style={thick,black,-{Latex[length=2mm]}},
+  tick/.style={black,thick},
+  pt/.style={coreblue},          % point/dot colour
+  concorange/.style={...},      % contrast colour
+  linegray/.style={gray},
+}
+```
+
+Note: the arrow spec is `{Latex[length=2mm]}-{Latex[length=2mm]}` for a double-headed axis. Writing `{-Latex}-` triggers "Unknown arrow tip kind '-Latex'".
+
+### Label every tick below the axis
+
+For primary-school readers, label **every** tick with its number directly below the axis, not just the endpoints. Place tick labels one row below the line:
+
+```latex
+\draw[axis] (-0.4,0) -- (6.4,0);
+\foreach \x in {0,1,2,3,4,5,6} {\draw[tick] (\x,-0.15)--(\x,0.15);}
+\node[below,linegray,font=\small] at (0,-0.2) {$0$};
+\node[below,linegray,font=\small] at (1,-0.2) {$\tfrac{1}{6}$};
+...
+```
+
+### Keep all point labels BELOW the axis
+
+The single most common overlap bug is putting point labels (`\node[above,...] at (x,0.15)`) above the axis, where they collide with the preceding paragraph or a figure stacked above. **Default to placing point labels below the axis**, as a second row under the tick labels:
+
+```latex
+\fill[pt] (3,0) circle (2.2pt);
+\node[below,coreblue,font=\normalsize] at (3,-0.75) {$\tfrac{1}{2}$};
+```
+
+Only put a label above the axis when there is genuinely nothing above the figure on the page.
+
+### Comparing fractions: use separate aligned axes, not one stacked axis
+
+When showing that several fractions are equal (e.g. \(1/2 = 2/4 = 4/8\)) or equivalent under 约分/通分, **draw one number line per fraction**, stacked vertically and aligned at 0 and 1, rather than cramming all fractions onto a single axis. Stacking labels for multiple fractions at the same axis point makes them overlap and become unreadable.
+
+Each axis gets its own scale (e.g. halves, quarters, eighths), its own coloured dot at the fraction's position, and a coloured below-axis label. Vertical dashed arrows between axes show the transformation (`\div 2 →`). Keep the 0 and 1 of every axis on the same vertical lines so the learner can read equality by eye.
+
+### Spacing and page-break safety
+
+- Put `\vspace` (or `\vspace*` before a potential page break) around every `tikzpicture` so the figure never touches the surrounding text. 10–14pt above and below is usually enough; increase when a figure has below-axis point labels or braces.
+- When a figure has both a caption and a brace below the axis, separate them onto different rows: tick labels at `y=-0.2`, point labels at `y=-0.75`, brace at `y=-0.85`, brace label at `y=-1.1`. Stacking them too close causes overlap.
+- Prefer moving captions **outside** the `tikzpicture` (as `\centerline{\small ...}` immediately after `\end{center}`) instead of internal TikZ `\node` text. External captions flow with the page and are easier to space.
+- If one combined `tikzpicture` keeps colliding with text, split it into multiple `tikzpicture` environments, each with its own `\vspace`.
+- Use `\nopagebreak` or keep a figure with its introducing sentence when a figure and its caption would otherwise split across pages.
+
+### Braces for "how much difference"
+
+Use `decorations.pathreplacing` with a mirrored brace to mark the gap between two points, and place the brace label one row below the brace:
+
+```latex
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},linegray] (2,-0.85)--(3,-0.85);
+\node[below,linegray,font=\small] at (2.5,-1.1) {差 $\tfrac{1}{6}$};
+```
+
 ## Multiplication and divisibility visual patterns
 
 When these topics appear, use the following defaults.
@@ -202,6 +269,44 @@ Default typography:
 
 Locate an installed Kaiti font instead of assuming a font name resolves in every environment. Prefer an explicit font file path when compilation is sandboxed. Keep Latin and mathematics fonts separate from the CJK body font.
 
+### Font size control (XeLaTeX + ctex)
+
+`ctexart` (based on `article`) silently ignores arbitrary class options such as `14pt`, `16pt` — it only honours the standard `10/11/12pt` sizes. When the user asks for a larger body size (common for primary-school materials), switch the document class to `extarticle`, which supports any of `8pt…20pt`, and load ctex as a package for CJK only:
+
+```latex
+\documentclass[14pt,a4paper]{extarticle}
+\usepackage[fontset=none,scheme=plain]{ctex}
+```
+
+`fontset=none` disables ctex's bundled font sets so your explicit `\setCJKmainfont` calls take effect; `scheme=plain` keeps the layout plain (no fancy headings). Verify the size actually changed by checking the page count — a real 14pt switch typically adds 1–2 pages versus 11pt.
+
+### Loading Kaiti reliably on macOS
+
+`fontspec` often cannot resolve system Kaiti by family name (`STKaiti`, `Kaiti`) because the files live in dynamic asset paths under `/System/Library/AssetsV2/...`. Two robust approaches:
+
+1. Find the real file with `fc-list :lang=zh family file | rg -i kai`, then point `\setCJKmainfont` at an explicit `Path=` with the file copied into the project folder:
+   ```latex
+   \setCJKmainfont[Path=./,AutoFakeBold=2.5,FaceIndex=0]{Kaiti.ttc}
+   ```
+   `AutoFakeBold` synthesises a bold weight (Kaiti has none natively); `FaceIndex=0` picks the first face of a `.ttc` collection.
+2. Or fall back to a stable system family name such as `Songti SC` / `Heiti SC`, which `fontspec` resolves reliably.
+
+Always confirm the chosen font exists before compiling; do not assume a font name resolves in every environment.
+
+### Output file location: use the user-level temp directory
+
+Place all generated deliverables and build artifacts in the user-level temporary directory, not in the workspace. On macOS this is `$TMPDIR` (typically `/var/folders/.../T/`); on Linux use `$TMPDIR` falling back to `/tmp`. Keeping output out of the workspace avoids polluting the source tree with large binary artifacts (PDFs, font files, aux logs).
+
+Conventions:
+
+- create one subfolder per material: `$TMPDIR/<material-name>/` (e.g. `$TMPDIR/fractions-lesson/`);
+- compile into that folder: `xelatex -output-directory="$TMPDIR/<material-name>" <src>.tex`;
+- copy the final deliverables there: the `.pdf`, the editable `.tex` source, and any font file the `.tex` references by relative path (e.g. `Kaiti.ttc`) so the source still compiles standalone from that folder;
+- do not leave `build/`, `.aux`, `.log`, preview PNGs, or font copies inside the workspace — those are intermediate and belong only in the temp directory;
+- report the absolute temp path to the user, since `$TMPDIR` is per-user and per-session and is periodically cleared by the OS.
+
+Note: writing outside the workspace usually requires lifting the sandbox (request `all` permissions for the copy/compile command). If the environment forbids that, fall back to a workspace-local `build/` directory and clearly tell the user it is intermediate output, not a deliverable location.
+
 Use semantic visual hierarchy:
 
 - blue or neutral boxes for core ideas;
@@ -223,8 +328,8 @@ Before delivering a PDF:
    - answer space;
    - page count and footer references;
 4. revise and rebuild until the visual checks pass;
-5. remove temporary previews and auxiliary build files;
-6. deliver both the PDF and editable `.tex` source unless the user requests otherwise.
+5. place the final PDF, the `.tex` source, and any referenced font files in `$TMPDIR/<material-name>/`; remove intermediate previews and aux files from both the temp folder and the workspace;
+6. deliver the absolute temp path to the user, and keep both the PDF and editable `.tex` source unless the user requests otherwise.
 
 ## Quality checklist
 
@@ -239,5 +344,9 @@ Before delivering a PDF:
 - [ ] The final comprehensive assessment has exactly 5 problems and covers every knowledge point.
 - [ ] There is no unrequested cover, page header, or forced chapter break wasting paper.
 - [ ] Body text is regular Kaiti and not bold.
+- [ ] The requested body font size actually took effect (page count shifted vs. 11pt baseline); `ctexart` was replaced with `extarticle` if a non-standard size was requested.
+- [ ] Number-line diagrams have all point labels below the axis; no above-axis label collides with preceding text.
+- [ ] Fraction-comparison diagrams use separate 0-aligned axes (one per fraction), not labels stacked on a single axis.
 - [ ] Mathematical notation is typeset consistently.
+- [ ] Final PDF, `.tex` source, and referenced font files are placed in `$TMPDIR/<material-name>/`; no `build/`, aux, or preview files are left in the workspace.
 - [ ] The PDF has been compiled and visually inspected.
