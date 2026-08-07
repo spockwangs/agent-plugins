@@ -328,7 +328,7 @@ Before delivering a PDF:
    - answer space;
    - page count and footer references;
 4. revise and rebuild until the visual checks pass;
-5. place the final PDF, the `.tex` source, and any referenced font files in `$TMPDIR/<material-name>/`; remove intermediate previews and aux files from both the temp folder and the workspace;
+5. place the final PDF, the `.tex` source, and any referenced font files in the workspace; remove intermediate previews and aux files from both the temp folder and the workspace;
 6. deliver the absolute temp path to the user, and keep both the PDF and editable `.tex` source unless the user requests otherwise.
 
 ## Quality checklist
